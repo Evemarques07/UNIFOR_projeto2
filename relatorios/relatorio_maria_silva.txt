@@ -1,0 +1,49 @@
+RELATÓRIO POR VENDEDOR - MARIA SILVA
+=========================================
+
+Período: Janeiro a Março 2024
+Data do Relatório: 31/10/2025
+
+RESUMO DE DESEMPENHO
+--------------------
+Total de Vendas: R$ 12.680,00
+Quantidade de Vendas: 6
+Valor Médio por Venda: R$ 2.113,33
+Posição no Ranking: 1º lugar
+
+VENDAS DETALHADAS
+-----------------
+1. 15/01/2024 - Notebook Dell - 2 un. x R$ 3.500,00 = R$ 7.000,00
+2. 17/01/2024 - Teclado Mecânico - 3 un. x R$ 250,00 = R$ 750,00
+3. 01/02/2024 - Fone Bluetooth - 4 un. x R$ 120,00 = R$ 480,00
+4. 05/02/2024 - Pendrive 64GB - 10 un. x R$ 45,00 = R$ 450,00
+5. 12/02/2024 - Notebook Dell - 1 un. x R$ 3.500,00 = R$ 3.500,00
+6. 03/03/2024 - Webcam HD - 1 un. x R$ 150,00 = R$ 150,00
+7. 10/03/2024 - HD Externo - 1 un. x R$ 300,00 = R$ 300,00
+
+PRODUTOS VENDIDOS
+-----------------
+- Notebook Dell: 3 unidades
+- Pendrive 64GB: 10 unidades
+- Teclado Mecânico: 3 unidades
+- Fone Bluetooth: 4 unidades
+- Webcam HD: 1 unidade
+- HD Externo: 1 unidade
+
+ANÁLISE DE PERFORMANCE
+----------------------
+Pontos Fortes:
+- Maior volume de vendas da equipe
+- Especialista em produtos de alto valor (Notebooks)
+- Consistência nas vendas ao longo dos meses
+- Boa diversificação de produtos
+
+Oportunidades:
+- Pode aumentar frequência de vendas
+- Explorar mais produtos de acessórios
+- Manter foco em produtos premium
+
+Sugestões:
+- Continuar estratégia de venda de produtos de alto valor
+- Buscar cross-selling com acessórios
+- Compartilhar técnicas com outros vendedores

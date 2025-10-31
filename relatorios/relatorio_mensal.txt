@@ -1,0 +1,130 @@
+RELATÓRIO MENSAL DE VENDAS
+==========================
+
+Período: Janeiro a Março 2024
+Data do Relatório: 31/10/2025
+
+RESUMO MENSAL
+-------------
+
+JANEIRO 2024
+------------
+Total de Vendas: R$ 13.199,50
+Quantidade de Transações: 6
+Ticket Médio: R$ 2.199,92
+Participação no Total: 51,0%
+
+Principais Vendas:
+- Notebook Dell (Maria Silva): R$ 7.000,00
+- Notebook Dell (Ana Costa): R$ 3.500,00
+- Monitor Samsung (Ana Costa): R$ 1.200,00
+
+FEVEREIRO 2024
+--------------
+Total de Vendas: R$ 7.030,00
+Quantidade de Transações: 7
+Ticket Médio: R$ 1.004,29
+Participação no Total: 27,2%
+
+Principais Vendas:
+- Notebook Dell (Maria Silva): R$ 3.500,00
+- HD Externo (Ana Costa): R$ 900,00
+- Impressora HP (João Santos): R$ 800,00
+
+MARÇO 2024
+----------
+Total de Vendas: R$ 5.650,00
+Quantidade de Transações: 7
+Ticket Médio: R$ 807,14
+Participação no Total: 21,8%
+
+Principais Vendas:
+- Monitor Samsung (João Santos): R$ 2.400,00
+- Impressora HP (Ana Costa): R$ 800,00
+- Fone Bluetooth (João Santos): R$ 720,00
+
+ANÁLISE DE TENDÊNCIAS
+--------------------
+
+Crescimento Mensal:
+- Janeiro → Fevereiro: -46,7%
+- Fevereiro → Março: -19,6%
+- Tendência: Declínio constante
+
+Ticket Médio:
+- Janeiro: R$ 2.199,92
+- Fevereiro: R$ 1.004,29
+- Março: R$ 807,14
+- Tendência: Redução significativa
+
+Volume de Transações:
+- Janeiro: 6 vendas
+- Fevereiro: 7 vendas
+- Março: 7 vendas
+- Tendência: Estável
+
+VENDEDORES POR MÊS
+------------------
+
+Janeiro:
+1. Maria Silva: R$ 7.750,00
+2. Ana Costa: R$ 4.700,00
+3. João Santos: R$ 749,50
+
+Fevereiro:
+1. Maria Silva: R$ 3.950,00
+2. Ana Costa: R$ 900,00
+3. João Santos: R$ 2.180,00
+
+Março:
+1. João Santos: R$ 3.360,00
+2. Ana Costa: R$ 1.300,00
+3. Maria Silva: R$ 990,00
+
+PRODUTOS SAZONAIS
+-----------------
+
+Produtos com Pico em Janeiro:
+- Notebook Dell (início de ano/volta às aulas)
+- Monitor Samsung (setup de home office)
+
+Produtos Estáveis:
+- Fone Bluetooth
+- HD Externo
+
+Produtos em Crescimento:
+- Cabo HDMI (março)
+- Carregador Universal (março)
+
+FATORES DE INFLUÊNCIA
+---------------------
+
+Janeiro (Melhor Mês):
+- Volta às aulas
+- 13º salário
+- Renovação de equipamentos
+
+Fevereiro (Declínio):
+- Pós-festas
+- Menor poder de compra
+- Foco em produtos básicos
+
+Março (Estabilização):
+- Preparação para ano letivo
+- Compras empresariais
+- Produtos de menor valor
+
+RECOMENDAÇÕES
+-------------
+
+Estratégias para Abril:
+1. Campanhas específicas para produtos em declínio
+2. Promoções casadas (notebook + acessórios)
+3. Foco em produtos de menor ticket para aumentar volume
+4. Treinamento da equipe para cross-selling
+5. Análise de sazonalidade para planejamento futuro
+
+Metas Sugeridas:
+- Abril: R$ 8.000,00 (crescimento de 42%)
+- Maio: R$ 10.000,00
+- Meta de recuperação do patamar de janeiro até junho
