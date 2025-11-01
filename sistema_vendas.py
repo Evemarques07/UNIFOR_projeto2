@@ -68,6 +68,7 @@ def calcular_vendas_por_vendedor():
     
     return vendedores
 
+
 def calcular_vendas_por_produto():
     produtos = {}
     
@@ -128,6 +129,10 @@ def gerar_relatorio_geral():
     top_produtos = ranking_produtos(5)
     mes_destaque, valor_mes = melhor_mes()
     
+    # Calcular média de vendas por vendedor
+    num_vendedores = len(vendas_vendedor) if vendas_vendedor else 0
+    media_vendas_por_vendedor = total_vendas / num_vendedores if num_vendedores > 0 else 0
+    
     relatorio = {
         'total_geral': total_vendas,
         'quantidade_vendas': len(vendas),
@@ -137,7 +142,8 @@ def gerar_relatorio_geral():
         'top_vendedores': top_vendedores,
         'top_produtos': top_produtos,
         'melhor_mes': mes_destaque,
-        'valor_melhor_mes': valor_mes
+        'valor_melhor_mes': valor_mes,
+        'media_vendas_por_vendedor': media_vendas_por_vendedor
     }
     
     return relatorio
@@ -627,11 +633,9 @@ def menu_interativo():
             try:
                 print("\n--- REGISTRAR NOVA VENDA ---")
                 
-                # Listar produtos disponíveis
                 listar_produtos()
                 produto_escolha = input("\nEscolha o produto (número ou nome): ").strip()
                 
-                # Tentar obter produto por número
                 produto_obj = obter_produto_por_numero(produto_escolha)
                 if produto_obj:
                     produto = produto_obj['Nome']
@@ -642,11 +646,9 @@ def menu_interativo():
                     produto = produto_escolha
                     valor_sugerido = None
                 
-                # Listar vendedores disponíveis
                 listar_vendedores()
                 vendedor_escolha = input("\nEscolha o vendedor (número ou nome): ").strip()
                 
-                # Tentar obter vendedor por número
                 vendedor_selecionado = obter_vendedor_por_numero(vendedor_escolha)
                 if vendedor_selecionado:
                     vendedor = vendedor_selecionado
