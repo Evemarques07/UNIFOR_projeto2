@@ -29,6 +29,7 @@ Desenvolver um sistema para análise de vendas que permita:
 - ✅ Total de vendas por vendedor
 - ✅ Quantidade de vendas realizadas
 - ✅ Valor médio por venda
+- ✅ Média de vendas por vendedor
 - ✅ Ranking de melhores vendedores
 - ✅ Produtos vendidos por vendedor
 
@@ -203,6 +204,7 @@ Valor total: R$ 6.000,00
 Total Geral de Vendas: R$ 5.437.475,55
 Quantidade de Vendas: 1500
 Ticket Médio: R$ 3.624,98
+Média de Vendas por Vendedor: R$ 1.087.495,11
 
 --- TOP 5 VENDEDORES ---
 1. Ana: R$ 1.123.456,78
@@ -242,6 +244,7 @@ Ticket Médio: R$ 3.624,98
 - Total de vendas em valor
 - Quantidade de transações
 - Ticket médio por venda
+- Média de vendas entre todos os vendedores
 - Produtos vendidos por vendedor
 - Histórico detalhado de vendas
 
@@ -343,6 +346,22 @@ produtos = [
 vendedores = ["Maria", "João", "Ana", "Carlos", "Beatriz"]
 ```
 
+### Estrutura do Relatório Geral
+```python
+relatorio = {
+    'total_geral': 5437475.55,
+    'quantidade_vendas': 1500,
+    'vendedores': {...},  # Dados detalhados por vendedor
+    'produtos': {...},    # Dados detalhados por produto
+    'meses': {...},       # Vendas por mês
+    'top_vendedores': [...],  # Ranking dos vendedores
+    'top_produtos': [...],    # Ranking dos produtos
+    'melhor_mes': '2024-08',
+    'valor_melhor_mes': 234567.89,
+    'media_vendas_por_vendedor': 1087495.11  # Nova funcionalidade
+}
+```
+
 ## ⚡ Principais Funções
 
 ### Cadastro e Validação
@@ -438,6 +457,11 @@ pip install -r requirements.txt
 
 ## 📈 Roadmap Futuro
 
+### ✅ Atualizações Recentes
+- [x] **Média de Vendas por Vendedor**: Adicionado cálculo da média de vendas por vendedor no relatório geral
+- [x] **Tratamento de Divisão por Zero**: Implementado proteção contra divisão por zero no cálculo da média
+
+### 🔮 Próximas Funcionalidades
 - [ ] Interface web com Flask/Django
 - [ ] Dashboard interativo com Plotly/Dash
 - [ ] Integração com banco de dados (SQLite/PostgreSQL)
