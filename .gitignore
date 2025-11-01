@@ -154,3 +154,8 @@ Desktop.ini
 .idea/
 *.swp
 *.swo
+
+# Pastas de relatórios gerados
+relatorios/
+analises_csv/
+graficos/

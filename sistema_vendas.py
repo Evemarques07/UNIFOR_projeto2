@@ -232,6 +232,323 @@ def carregar_csv():
         print(f"Erro ao carregar CSV: {e}")
         return False
 
+def gerar_csvs_analises():
+    import os
+    import pandas as pd
+    
+    pasta_csv = "analises_csv"
+    if not os.path.exists(pasta_csv):
+        os.makedirs(pasta_csv)
+    
+    if not vendas:
+        print("Nenhuma venda registrada. Carregue dados primeiro.")
+        return False
+    
+    try:
+        vendas_vendedor = calcular_vendas_por_vendedor()
+        df_vendedores = pd.DataFrame([
+            {
+                'vendedor': vendedor,
+                'total_vendas': dados['total_vendas'],
+                'quantidade_vendas': dados['quantidade_vendas'],
+                'valor_medio': dados['valor_medio']
+            }
+            for vendedor, dados in vendas_vendedor.items()
+        ])
+        df_vendedores = df_vendedores.sort_values('total_vendas', ascending=False)
+        df_vendedores.to_csv(f"{pasta_csv}/analise_vendedores.csv", index=False, encoding='utf-8')
+        
+        vendas_produto = calcular_vendas_por_produto()
+        df_produtos = pd.DataFrame([
+            {
+                'produto': produto,
+                'total_vendido': dados['total_vendido'],
+                'quantidade_vendida': dados['quantidade_vendida'],
+                'receita': dados['receita']
+            }
+            for produto, dados in vendas_produto.items()
+        ])
+        df_produtos = df_produtos.sort_values('quantidade_vendida', ascending=False)
+        df_produtos.to_csv(f"{pasta_csv}/analise_produtos.csv", index=False, encoding='utf-8')
+        
+        vendas_mes = calcular_vendas_por_mes()
+        df_meses = pd.DataFrame([
+            {
+                'mes': mes,
+                'total_vendas': total
+            }
+            for mes, total in sorted(vendas_mes.items())
+        ])
+        df_meses.to_csv(f"{pasta_csv}/analise_mensal.csv", index=False, encoding='utf-8')
+        
+        ranking_vend = ranking_vendedores(10)
+        df_ranking_vend = pd.DataFrame(ranking_vend, columns=['vendedor', 'total_vendas'])
+        df_ranking_vend['posicao'] = range(1, len(df_ranking_vend) + 1)
+        df_ranking_vend = df_ranking_vend[['posicao', 'vendedor', 'total_vendas']]
+        df_ranking_vend.to_csv(f"{pasta_csv}/ranking_vendedores.csv", index=False, encoding='utf-8')
+        
+        ranking_prod = ranking_produtos(10)
+        df_ranking_prod = pd.DataFrame(ranking_prod, columns=['produto', 'quantidade_vendida'])
+        df_ranking_prod['posicao'] = range(1, len(df_ranking_prod) + 1)
+        df_ranking_prod = df_ranking_prod[['posicao', 'produto', 'quantidade_vendida']]
+        df_ranking_prod.to_csv(f"{pasta_csv}/ranking_produtos.csv", index=False, encoding='utf-8')
+        
+        relatorio_geral = gerar_relatorio_geral()
+        df_geral = pd.DataFrame([{
+            'total_geral': relatorio_geral['total_geral'],
+            'quantidade_vendas': relatorio_geral['quantidade_vendas'],
+            'ticket_medio': relatorio_geral['total_geral'] / relatorio_geral['quantidade_vendas'],
+            'melhor_mes': relatorio_geral['melhor_mes'],
+            'valor_melhor_mes': relatorio_geral['valor_melhor_mes']
+        }])
+        df_geral.to_csv(f"{pasta_csv}/relatorio_geral.csv", index=False, encoding='utf-8')
+        
+        df_vendas_completas = pd.DataFrame(vendas)
+        df_vendas_completas.to_csv(f"{pasta_csv}/vendas_completas.csv", index=False, encoding='utf-8')
+        
+        print(f"\nArquivos CSV gerados na pasta '{pasta_csv}':")
+        print("- analise_vendedores.csv")
+        print("- analise_produtos.csv") 
+        print("- analise_mensal.csv")
+        print("- ranking_vendedores.csv")
+        print("- ranking_produtos.csv")
+        print("- relatorio_geral.csv")
+        print("- vendas_completas.csv")
+        
+        return True
+        
+    except Exception as e:
+        print(f"Erro ao gerar CSVs: {e}")
+        return False
+
+def gerar_csv_vendedor_especifico(nome_vendedor):
+    import os
+    import pandas as pd
+    
+    pasta_csv = "analises_csv"
+    if not os.path.exists(pasta_csv):
+        os.makedirs(pasta_csv)
+    
+    relatorio = gerar_relatorio_vendedor(nome_vendedor)
+    if not relatorio:
+        print(f"Vendedor '{nome_vendedor}' não encontrado.")
+        return False
+    
+    try:
+        df_vendedor = pd.DataFrame([{
+            'vendedor': relatorio['vendedor'],
+            'total_vendas': relatorio['total_vendas'],
+            'quantidade_vendas': relatorio['quantidade_vendas'],
+            'valor_medio': relatorio['valor_medio']
+        }])
+        
+        df_produtos_vendedor = pd.DataFrame([
+            {
+                'produto': produto,
+                'quantidade': qtd
+            }
+            for produto, qtd in relatorio['produtos_vendidos'].items()
+        ])
+        
+        df_vendas_detalhadas = pd.DataFrame(relatorio['vendas_detalhadas'])
+        
+        nome_arquivo_base = nome_vendedor.replace(' ', '_').lower()
+        df_vendedor.to_csv(f"{pasta_csv}/vendedor_{nome_arquivo_base}_resumo.csv", index=False, encoding='utf-8')
+        df_produtos_vendedor.to_csv(f"{pasta_csv}/vendedor_{nome_arquivo_base}_produtos.csv", index=False, encoding='utf-8')
+        df_vendas_detalhadas.to_csv(f"{pasta_csv}/vendedor_{nome_arquivo_base}_detalhado.csv", index=False, encoding='utf-8')
+        
+        print(f"\nArquivos CSV do vendedor '{nome_vendedor}' gerados:")
+        print(f"- vendedor_{nome_arquivo_base}_resumo.csv")
+        print(f"- vendedor_{nome_arquivo_base}_produtos.csv")
+        print(f"- vendedor_{nome_arquivo_base}_detalhado.csv")
+        
+        return True
+        
+    except Exception as e:
+        print(f"Erro ao gerar CSV do vendedor: {e}")
+        return False
+
+def gerar_csv_todas_vendas_vendedor(nome_vendedor):
+    import os
+    import pandas as pd
+    
+    pasta_csv = "analises_csv"
+    if not os.path.exists(pasta_csv):
+        os.makedirs(pasta_csv)
+    
+    vendas_vendedor = [venda for venda in vendas if venda['vendedor'] == nome_vendedor]
+    
+    if not vendas_vendedor:
+        print(f"Nenhuma venda encontrada para o vendedor '{nome_vendedor}'.")
+        return False
+    
+    try:
+        df_todas_vendas = pd.DataFrame(vendas_vendedor)
+        df_todas_vendas = df_todas_vendas.sort_values('data')
+        
+        nome_arquivo_base = nome_vendedor.replace(' ', '_').lower()
+        nome_arquivo = f"{pasta_csv}/todas_vendas_{nome_arquivo_base}.csv"
+        df_todas_vendas.to_csv(nome_arquivo, index=False, encoding='utf-8')
+        
+        total_vendas = sum([venda['valor_total'] for venda in vendas_vendedor])
+        
+        print(f"\nCSV gerado: todas_vendas_{nome_arquivo_base}.csv")
+        print(f"Total de registros: {len(vendas_vendedor)}")
+        print(f"Valor total das vendas: {formatar_moeda(total_vendas)}")
+        print(f"Período: {min([v['data'] for v in vendas_vendedor])} a {max([v['data'] for v in vendas_vendedor])}")
+        
+        return True
+        
+    except Exception as e:
+        print(f"Erro ao gerar CSV de todas as vendas: {e}")
+        return False
+
+def gerar_graficos():
+    import os
+    import pandas as pd
+    
+    try:
+        import matplotlib
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+        import numpy as np
+    except ImportError as e:
+        print(f"Erro: Bibliotecas necessárias não encontradas - {e}")
+        print("Execute: pip install matplotlib seaborn")
+        return False
+    
+    pasta_graficos = "graficos"
+    if not os.path.exists(pasta_graficos):
+        os.makedirs(pasta_graficos)
+    
+    if not vendas:
+        print("Nenhuma venda registrada. Carregue dados primeiro.")
+        return False
+    
+    try:
+        plt.style.use('default')
+        sns.set_palette("husl")
+        
+        df_vendas = pd.DataFrame(vendas)
+        df_vendas['ano'] = df_vendas['data'].str[:4]
+        df_vendas['mes'] = df_vendas['data'].str[:7]
+        
+        heatmap_data = df_vendas.groupby(['vendedor', 'produto'])['quantidade'].sum().unstack(fill_value=0)
+        
+        plt.figure(figsize=(12, 8))
+        sns.heatmap(heatmap_data, annot=True, fmt='d', cmap='YlOrRd', cbar_kws={'label': 'Quantidade Vendida'})
+        plt.title('Mapa de Calor: Quantidade de Produtos Vendidos por Vendedor', fontsize=14, fontweight='bold')
+        plt.xlabel('Produtos', fontsize=12)
+        plt.ylabel('Vendedores', fontsize=12)
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.savefig(f'{pasta_graficos}/heatmap_vendedor_produto.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        vendas_vendedor = df_vendas.groupby('vendedor')['valor_total'].sum().sort_values(ascending=False)
+        plt.figure(figsize=(10, 6))
+        bars = plt.bar(vendas_vendedor.index, vendas_vendedor.values, color=['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57'])
+        plt.title('Total de Vendas por Vendedor', fontsize=14, fontweight='bold')
+        plt.xlabel('Vendedores', fontsize=12)
+        plt.ylabel('Valor Total (R$)', fontsize=12)
+        plt.xticks(rotation=45)
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2., height,
+                    f'R$ {height:,.0f}'.replace(',', '.'), 
+                    ha='center', va='bottom', fontsize=10)
+        plt.tight_layout()
+        plt.savefig(f'{pasta_graficos}/vendas_por_vendedor.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        vendas_ano_vendedor = df_vendas.groupby(['ano', 'vendedor'])['valor_total'].sum().unstack(fill_value=0)
+        plt.figure(figsize=(12, 8))
+        vendas_ano_vendedor.plot(kind='bar', stacked=False, figsize=(12, 8))
+        plt.title('Vendas por Ano por Vendedor', fontsize=14, fontweight='bold')
+        plt.xlabel('Ano', fontsize=12)
+        plt.ylabel('Valor Total (R$)', fontsize=12)
+        plt.legend(title='Vendedores', bbox_to_anchor=(1.05, 1), loc='upper left')
+        plt.xticks(rotation=0)
+        plt.tight_layout()
+        plt.savefig(f'{pasta_graficos}/vendas_ano_vendedor.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        produtos_vendidos = df_vendas.groupby('produto')['quantidade'].sum().sort_values(ascending=False).head(10)
+        plt.figure(figsize=(12, 6))
+        bars = plt.bar(range(len(produtos_vendidos)), produtos_vendidos.values, color='skyblue')
+        plt.title('Top 10 Produtos Mais Vendidos (Quantidade)', fontsize=14, fontweight='bold')
+        plt.xlabel('Produtos', fontsize=12)
+        plt.ylabel('Quantidade Vendida', fontsize=12)
+        plt.xticks(range(len(produtos_vendidos)), produtos_vendidos.index, rotation=45, ha='right')
+        for i, bar in enumerate(bars):
+            height = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2., height,
+                    f'{int(height)}', ha='center', va='bottom', fontsize=10)
+        plt.tight_layout()
+        plt.savefig(f'{pasta_graficos}/top_produtos_quantidade.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        vendas_mes = df_vendas.groupby('mes')['valor_total'].sum()
+        plt.figure(figsize=(14, 6))
+        plt.plot(vendas_mes.index, vendas_mes.values, marker='o', linewidth=2, markersize=6, color='#FF6B6B')
+        plt.title('Evolução das Vendas por Mês', fontsize=14, fontweight='bold')
+        plt.xlabel('Mês', fontsize=12)
+        plt.ylabel('Valor Total (R$)', fontsize=12)
+        plt.xticks(rotation=45)
+        plt.grid(True, alpha=0.3)
+        for i, v in enumerate(vendas_mes.values):
+            if i % 3 == 0:
+                plt.text(vendas_mes.index[i], v, f'R$ {v:,.0f}'.replace(',', '.'), 
+                        ha='center', va='bottom', fontsize=8)
+        plt.tight_layout()
+        plt.savefig(f'{pasta_graficos}/evolucao_vendas_mes.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        receita_produto = df_vendas.groupby('produto')['valor_total'].sum().sort_values(ascending=False).head(8)
+        plt.figure(figsize=(10, 10))
+        colors = plt.cm.Set3(np.linspace(0, 1, len(receita_produto)))
+        wedges, texts, autotexts = plt.pie(receita_produto.values, labels=receita_produto.index, 
+                                          autopct='%1.1f%%', startangle=90, colors=colors)
+        plt.title('Participação na Receita por Produto', fontsize=14, fontweight='bold')
+        for autotext in autotexts:
+            autotext.set_color('white')
+            autotext.set_fontweight('bold')
+        plt.tight_layout()
+        plt.savefig(f'{pasta_graficos}/receita_produto_pizza.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        vendedor_mes = df_vendas.groupby(['mes', 'vendedor'])['valor_total'].sum().unstack(fill_value=0)
+        plt.figure(figsize=(16, 8))
+        for vendedor in vendedor_mes.columns:
+            plt.plot(vendedor_mes.index, vendedor_mes[vendedor], marker='o', label=vendedor, linewidth=2)
+        plt.title('Desempenho Mensal por Vendedor', fontsize=14, fontweight='bold')
+        plt.xlabel('Mês', fontsize=12)
+        plt.ylabel('Valor Total (R$)', fontsize=12)
+        plt.legend()
+        plt.xticks(rotation=45)
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(f'{pasta_graficos}/desempenho_mensal_vendedor.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        print(f"\nGráficos gerados na pasta '{pasta_graficos}':")
+        print("- heatmap_vendedor_produto.png")
+        print("- vendas_por_vendedor.png")
+        print("- vendas_ano_vendedor.png")
+        print("- top_produtos_quantidade.png")
+        print("- evolucao_vendas_mes.png")
+        print("- receita_produto_pizza.png")
+        print("- desempenho_mensal_vendedor.png")
+        
+        return True
+        
+    except Exception as e:
+        print(f"Erro ao gerar gráficos: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
 def listar_vendedores():
     print("\n--- VENDEDORES DISPONÍVEIS ---")
     for i, vendedor in enumerate(vendedores, 1):
@@ -298,6 +615,10 @@ def menu_interativo():
         print("8. Listar Todas as Vendas")
         print("9. Listar Vendedores e Produtos")
         print("10. Carregar Dataset CSV")
+        print("11. Gerar CSVs de Análises")
+        print("12. Gerar CSV de Vendedor Específico")
+        print("13. Gerar CSV com Todas as Vendas de um Vendedor")
+        print("14. Gerar Gráficos de Análise")
         print("0. Sair")
         
         opcao = input("\nEscolha uma opção: ").strip()
@@ -418,6 +739,36 @@ def menu_interativo():
                 print("Dataset carregado com sucesso!")
             else:
                 print("Falha ao carregar dataset.")
+        
+        elif opcao == '11':
+            print("\n--- GERAR CSVs DE ANÁLISES ---")
+            if gerar_csvs_analises():
+                print("CSVs de análises gerados com sucesso!")
+            else:
+                print("Falha ao gerar CSVs.")
+        
+        elif opcao == '12':
+            print("\n--- GERAR CSV DE VENDEDOR ESPECÍFICO ---")
+            nome = input("Nome do vendedor: ").strip()
+            if gerar_csv_vendedor_especifico(nome):
+                print(f"CSVs do vendedor '{nome}' gerados com sucesso!")
+            else:
+                print("Falha ao gerar CSVs do vendedor.")
+        
+        elif opcao == '13':
+            print("\n--- GERAR CSV COM TODAS AS VENDAS DE UM VENDEDOR ---")
+            nome = input("Nome do vendedor: ").strip()
+            if gerar_csv_todas_vendas_vendedor(nome):
+                print(f"CSV com todas as vendas de '{nome}' gerado com sucesso!")
+            else:
+                print("Falha ao gerar CSV.")
+        
+        elif opcao == '14':
+            print("\n--- GERAR GRÁFICOS DE ANÁLISE ---")
+            if gerar_graficos():
+                print("Gráficos gerados com sucesso!")
+            else:
+                print("Falha ao gerar gráficos.")
         
         elif opcao == '0':
             print("Encerrando sistema...")
